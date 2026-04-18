@@ -19,6 +19,9 @@ export class Maestra {
   @Column()
   email: string;
 
+  @Column( { nullable: true } )
+  avatar_url: string
+
   @ManyToMany(() => Escuela, escuela => escuela.maestras)
   @JoinTable()
   escuelas: Escuela[];

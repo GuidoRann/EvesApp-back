@@ -6,36 +6,44 @@ import { MaestraRepository } from '../repositories/MaestraRepository';
 import { CreateMaestraDTO } from '../types/types';
 
 export const AuthService = {
-  obtenerOCrearMaestra: async ( req: Request, res: Response ) => {
-      try {
-        const user = req.user;
-    
-        if( !user ) return res.status( 401 ).json({ message: 'Unauthorized' });
-    
-        let maestra = await MaestraRepository.findOne({
-          where: { supabaseUserId: user.id }
-        });
-    
-        if ( !maestra ) {
-    
-          const maestraDTO: CreateMaestraDTO = {
-            supabaseUserId: user.id,
-            email: user.email ?? '',
-            nombre: user.user_metadata?.name ?? '',
-            apellido: '',
-            escuelas: [],
-            gradosComoTitular: [],
-            tareas: [],
-            grados: []
-          };
-    
-          maestra = await MaestraRepository.save( MaestraMapper.toEntity( maestraDTO ) );
-        }
-    
-        return response.success( res, 200, 'Maestra obtenida/creada', maestra );
-      } catch ( error ) {
-        logger.error( error );
-        response.error( res, error );
+  obtenerOCrearMaestra: async (req: Request, res: Response) => {
+    try {
+      const user = req.user;
+
+      if (!user) {
+        return res.status(401).json({ message: 'Unauthorized' });
       }
+
+      //TODO: separar nombre y apellido -- full_name viene todo junto, hacer un split
+      const maestraDTO: CreateMaestraDTO = {
+        supabaseUserId: user.id,
+        email: user.email ?? '',
+        nombre: user.user_metadata?.full_name ?? '',
+        apellido: user.user_metadata?.family_name ?? '',
+        avatar_url: user.user_metadata?.avatar_url ?? '',
+        escuelas: [],
+        gradosComoTitular: [],
+        tareas: [],
+        grados: []
+      };
+
+      let maestra = await MaestraRepository.findOne({
+        where: { supabaseUserId: user.id }
+      });
+
+      if (!maestra) {
+        maestra = MaestraRepository.create(
+          MaestraMapper.toEntity( maestraDTO )
+        );
+
+        await MaestraRepository.save( maestra );
+      }
+
+      return response.success(res, 200, 'Maestra obtenida/creada', maestra);
+
+    } catch (error) {
+      logger.error(error);
+      response.error(res, error);
     }
+  }
 };

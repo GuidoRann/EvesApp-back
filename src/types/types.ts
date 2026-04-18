@@ -120,6 +120,7 @@ export interface MaestraDTO {
   nombre: string;
   apellido: string;
   email: string;
+  avatar_url: string;
   escuelas: Escuela[];
   gradosComoTitular: Grado[];
   tareas: Tarea[];

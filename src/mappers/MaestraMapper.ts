@@ -1,6 +1,6 @@
 import { DeepPartial } from 'typeorm';
 import { Maestra } from '../models/Maestra';
-import { MaestraDTO } from '../types/types';
+import { CreateMaestraDTO, MaestraDTO } from '../types/types';
 
 export class MaestraMapper {
   static toDTO( maestra: Maestra ): MaestraDTO {
@@ -10,6 +10,7 @@ export class MaestraMapper {
       nombre: maestra.nombre,
       apellido: maestra.apellido,
       email: maestra.email,
+      avatar_url: maestra.avatar_url,
       escuelas: maestra.escuelas,
       gradosComoTitular: maestra.gradosComoTitular,
       tareas: maestra.tareas,
@@ -17,11 +18,13 @@ export class MaestraMapper {
     };
   }
 
-  static toEntity( maestra: MaestraDTO ): DeepPartial<Maestra> {
+  static toEntity( maestra: CreateMaestraDTO ): DeepPartial<Maestra> {
     return {
+      supabaseUserId: maestra.supabaseUserId,
       nombre: maestra.nombre,
       apellido: maestra.apellido,
       email: maestra.email,
+      avatar_url: maestra.avatar_url
     };
   }
 }
