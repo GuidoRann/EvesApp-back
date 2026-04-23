@@ -55,12 +55,23 @@ export const MaestraService = {
     }
   },
 
-  actualizarMaestra: async ( req: Request< Params, {}, { maestra: UpdateMaestraDTO } >, res: Response ) => {
+  actualizarMaestra: async ( req: Request< Params, {}, UpdateMaestraDTO >, res: Response ) => {
     try {
       const { id } = req.params;
-      const { maestra } = req.body;
+      const maestra = req.body;
 
-      const maestraActualizada = await MaestraRepository.update( id, maestra );
+     console.log('BODY:', req.body);
+     console.log('MAESTRA:', maestra);
+
+      const existente = await MaestraRepository.findOneBy( { maestraId: id } );
+
+      if ( !existente ) {
+        return response.error( res, new createError.NotFound('Maestra no encontrada') );
+      }
+
+      const actualizada = MaestraRepository.merge( existente, maestra );
+
+      const maestraActualizada = await MaestraRepository.save( actualizada );
 
       return response.success( res, 200, 'Maestra actualizada', maestraActualizada );
     } catch ( error ) {
