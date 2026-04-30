@@ -11,21 +11,18 @@ export class Grado {
   
   @ManyToOne( () => Escuela, escuela => escuela.listaGrados )
   escuela: Escuela;
-
+  
   @Column()
   numero: string;
+  
+  @Column()
+  letra: string;
   
   @Column()
   turno: string;
 
   @Column()
   divisionAnual: string;
-
-  @OneToMany( () => Materia, materia => materia.grado )
-  ListaMaterias: Materia[];
-
-  @OneToMany( () => Alumno, alumno => alumno.grado )
-  listaAlumnos: Alumno[];
 
   @ManyToOne( () => Maestra, maestra => maestra.gradosComoTitular )
   @JoinColumn( { name: 'maestra_titular_id' } )
@@ -34,6 +31,7 @@ export class Grado {
   @ManyToMany( () => Maestra, maestra => maestra.grados )
   @JoinTable()
   maestras: Maestra[];
-
   
+  @OneToMany( () => Alumno, alumno => alumno.grado )
+  listaAlumnos: Alumno[];
 }
