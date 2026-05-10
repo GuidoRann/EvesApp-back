@@ -1,5 +1,6 @@
 import { type Request, type Response } from 'express';
 import { response } from '../common/Response';
+import createError from 'http-errors';
 import { logger } from '../common/logger';
 import { MaestraMapper } from '../mappers/MaestraMapper';
 import { MaestraRepository } from '../repositories/MaestraRepository';
@@ -11,10 +12,9 @@ export const AuthService = {
       const user = req.user;
 
       if (!user) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return response.error(res, new createError.Unauthorized('Token inválido'));
       }
 
-      //TODO: separar nombre y apellido -- full_name viene todo junto, hacer un split
       const maestraDTO: CreateMaestraDTO = {
         supabaseUserId: user.id,
         email: user.email ?? '',
@@ -26,7 +26,7 @@ export const AuthService = {
         tareas: [],
         grados: []
       };
-
+      
       let maestra = await MaestraRepository.findOne({
         where: { supabaseUserId: user.id }
       });

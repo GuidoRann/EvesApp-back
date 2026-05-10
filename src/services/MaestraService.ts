@@ -60,9 +60,6 @@ export const MaestraService = {
       const { id } = req.params;
       const maestra = req.body;
 
-     console.log('BODY:', req.body);
-     console.log('MAESTRA:', maestra);
-
       const existente = await MaestraRepository.findOneBy( { maestraId: id } );
 
       if ( !existente ) {

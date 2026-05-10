@@ -9,6 +9,17 @@ interface Params {
 }
 
 export const GradoService = {
+  crearGrado: async ( req: Request, res: Response ) => {
+    try {
+      const grado = await GradoRepository.save( req.body );
+
+      return response.success( res, 201, 'Grado creado', grado );
+    } catch ( error ) {
+      logger.error( error );
+      response.error( res, error );       
+    }
+  },
+
   obtenerGrado: async ( req: Request< Params >, res: Response ) => {
     try {
       const { id } = req.params;
@@ -18,39 +29,39 @@ export const GradoService = {
         throw new createError.NotFound('Grado no encontrado');
       }
 
-      return res.status( 200 ).json( gradoObtenido );
+      return response.success( res, 200, 'Grado obtenido', gradoObtenido );
     } catch ( error ) {
       logger.error( error );
       response.error( res, error );    
     }
   },
 
-  obtenerGrados: async ( req: Request, res: Response ) => {
+  obtenerListaDeGrados: async ( req: Request, res: Response ) => {
     try {
       const grados = await GradoRepository.find();
       
-      return res.status( 200 ).json( grados );
+      return response.success( res, 200, 'Grados obtenidos', grados );
     } catch ( error ) {
       logger.error( error );
       response.error( res, error );      
     }
   },
 
-  crearGrado: async ( req: Request, res: Response ) => {
-    try {
-      const grado = await GradoRepository.save( req.body );
-      return res.status( 201 ).json( grado );
-    } catch ( error ) {
-      logger.error( error );
-      response.error( res, error );       
-    }
-  },
-
   actualizarGrado: async ( req: Request< Params >, res: Response ) => {
     try {
       const { id } = req.params;
-      const gradoActualizado = await GradoRepository.update( id, req.body );
-      return res.status( 200 ).json( gradoActualizado );
+
+      const gradoExistente = await GradoRepository.findOneBy( { gradoId: id } );
+
+      if ( !gradoExistente ) {
+        return response.error( res, new createError.NotFound('Grado no encontrado') );
+      }
+
+      const actualizado = GradoRepository.merge( gradoExistente, req.body );
+
+      const gradoActualizado = await GradoRepository.save( actualizado );
+      
+      return response.success( res, 200, 'Grado actualizado', gradoActualizado );
     } catch ( error ) {
       logger.error( error );
       response.error( res, error );      
@@ -60,8 +71,10 @@ export const GradoService = {
   eliminarGrado: async ( req: Request< Params >, res: Response ) => {
     try {
       const { id } = req.params;
+     
       const gradoEliminado = await GradoRepository.delete( id );
-      return res.status( 200 ).json( gradoEliminado );
+     
+      return response.success( res, 200, 'Grado eliminado', gradoEliminado );
     } catch ( error ) {
       logger.error( error );
       response.error( res, error );       
