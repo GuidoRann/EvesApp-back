@@ -21,6 +21,9 @@ export class Alumno {
   @Column()
   direccion: string
 
+  @Column()
+  barrio: string
+
   @Column( { type: 'date', nullable: true } ) 
   fechaNacimiento: Date;
 

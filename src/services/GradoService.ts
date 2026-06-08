@@ -11,7 +11,22 @@ interface Params {
 export const GradoService = {
   crearGrado: async ( req: Request, res: Response ) => {
     try {
-      const grado = await GradoRepository.save( req.body );
+      const nuevoGrado = GradoRepository.create({
+        numero: req.body.numero,
+        letra: req.body.letra,
+        turno: req.body.turno,
+        divisionAnual: req.body.divisionAnual,
+
+        escuela: {
+          escuelaId: req.body.escuelaId
+        },
+
+        maestraTitular: {
+          maestraId: req.body.maestraTitularId
+        }
+      });
+
+      const grado = await GradoRepository.save(nuevoGrado);
 
       return response.success( res, 201, 'Grado creado', grado );
     } catch ( error ) {

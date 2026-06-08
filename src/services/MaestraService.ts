@@ -34,7 +34,14 @@ export const MaestraService = {
     if( !req.user?.id ) return res.status( 401 ).json({ message: 'Unauthorized' });
 
     const maestra = await MaestraRepository.findOne({
-      where: { supabaseUserId: req.user.id }
+      where: { 
+        supabaseUserId: req.user.id 
+      },
+      relations: {
+        escuelas: true,
+        grados: true,
+        gradosComoTitular: true
+      }
     });
 
     if ( !maestra ) {

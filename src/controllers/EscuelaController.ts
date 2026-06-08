@@ -4,9 +4,9 @@ import { EscuelaService } from "../services/EscuelaService";
 const router = Router();
 
 router
-  .get( "/listado", EscuelaService.obtenerListaDeEscuelas )
+  .get( "/listarEscuelas", EscuelaService.obtenerListaDeEscuelas )
   .get( "/:id", EscuelaService.obtenerEscuela )
-  .post( "/crear", EscuelaService.crearEscuela )
+  .post( "/crearEscuela", EscuelaService.crearEscuela )
   .put( "/:id", EscuelaService.actualizarEscuela )
   .delete( "/:id", EscuelaService.eliminarEscuela );
 
