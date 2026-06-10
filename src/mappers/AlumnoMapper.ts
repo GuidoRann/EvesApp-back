@@ -8,7 +8,8 @@ export class AlumnoMapper {
     return {
       alumnoId: alumno.alumnoId,
       nombre: alumno.nombre,
-      apellido: alumno.apellido,
+      apellidoPaterno: alumno.apellidoPaterno,
+      apellidoMaterno: alumno.apellidoMaterno,
       numeroDocumento: alumno.numeroDocumento,
       fechaNacimiento: alumno.fechaNacimiento,
       direccion: alumno.direccion,
@@ -24,7 +25,8 @@ export class AlumnoMapper {
   static toEntity( alumno: CreateAlumnoDTO ): DeepPartial< Alumno > {
     return {
       nombre: alumno.nombre,
-      apellido: alumno.apellido,
+      apellidoPaterno: alumno.apellidoPaterno,
+      apellidoMaterno: alumno.apellidoMaterno,
       numeroDocumento: alumno.numeroDocumento,
       direccion: alumno.direccion,
       ...( alumno.fechaNacimiento && { fechaNacimiento: alumno.fechaNacimiento }),

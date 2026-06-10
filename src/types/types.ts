@@ -13,7 +13,8 @@ import { Tarea } from '../models/Tarea';
 export interface AlumnoDTO {
   alumnoId: string;
   nombre: string;
-  apellido: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
   numeroDocumento: string;
   direccion: string;
   fechaNacimiento: Date;
@@ -27,7 +28,8 @@ export interface AlumnoDTO {
 
 export type CreateAlumnoDTO = {
   nombre: string;
-  apellido: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
   numeroDocumento: string;
   direccion: string;
   fechaNacimiento?: Date;

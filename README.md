@@ -1,7 +1,4 @@
-# Awesome Project Build with TypeORM
+## Implementaciones a hacer
+- [ ] 
 
-Steps to run this project:
-
-1. Run `npm i` command
-2. Setup database settings inside `data-source.ts` file
-3. Run `npm start` command
+## Errores por arreglar

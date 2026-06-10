@@ -13,7 +13,10 @@ export class Alumno {
   nombre: string
 
   @Column()
-  apellido: string
+  apellidoPaterno: string
+
+  @Column()
+  apellidoMaterno: string
 
   @Column()
   numeroDocumento: string
