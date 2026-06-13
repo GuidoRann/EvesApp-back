@@ -7,6 +7,7 @@ router
   .get( "/listarEscuelas", EscuelaService.obtenerListaDeEscuelas )
   .get( "/:id", EscuelaService.obtenerEscuela )
   .post( "/crearEscuela", EscuelaService.crearEscuela )
+  .put( "/unirmeEscuela/:id", EscuelaService.unirmeAUnaEscuela )
   .put( "/:id", EscuelaService.actualizarEscuela )
   .delete( "/:id", EscuelaService.eliminarEscuela );
 

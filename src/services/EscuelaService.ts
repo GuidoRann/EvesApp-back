@@ -5,6 +5,7 @@ import { EscuelaMapper } from '../mappers/EscuelaMapper';
 import { CreateEscuelaDTO, ResponseEscuelaDTO, UpdateEscuelaDTO } from '../types/types';
 import { EscuelaRepository } from '../repositories/EscuelaRepository';
 import { logger } from '../common/logger';
+import { MaestraRepository } from '../repositories/MaestraRepository';
 
 interface Params {
   id: string
@@ -47,6 +48,46 @@ export const EscuelaService = {
       const escuelaCreada = await EscuelaRepository.save( escuelaEntity );
       
       return response.success( res, 201, 'Escuela creada', escuelaCreada );
+    } catch ( error ) {
+      logger.error( error );
+      response.error( res, error );
+    }
+  },
+
+  unirmeAUnaEscuela: async ( req: Request< Params, {}, { escuela: UpdateEscuelaDTO } >, res: Response ) => {
+    try {
+      const { id } = req.params;
+      const user = req.user;
+
+      if (!user) {
+        throw new Error("Token inválido");
+      }
+      
+      const escuela = await EscuelaRepository.findOne({
+        where: { escuelaId: id },
+        relations: {
+          maestras: true,
+        },
+      });
+
+      const maestra = await MaestraRepository.findOne({
+        where: {
+          supabaseUserId: user.id
+        }
+      });
+
+      if (!escuela) {
+        throw new Error("Escuela no encontrada");
+      }
+
+      if (!maestra) {
+        throw new Error("Maestra no encontrada");
+      }
+
+      escuela.maestras.push( maestra );
+
+      const escuelaActualizada = await EscuelaRepository.save(escuela);
+      return response.success( res, 200, 'Escuela actualizada', escuelaActualizada );
     } catch ( error ) {
       logger.error( error );
       response.error( res, error );
