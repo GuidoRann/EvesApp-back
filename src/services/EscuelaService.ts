@@ -15,7 +15,15 @@ export const EscuelaService = {
   obtenerEscuela: async ( req: Request< Params >, res: Response ) => {
     try {
       const { id } = req.params;
-      const escuelaResponse = await EscuelaRepository.findOneBy( { escuelaId: id } );
+      const escuelaResponse = await EscuelaRepository.findOne( {
+        where: {
+          escuelaId: id,
+        },
+        relations: {
+          maestras: true,
+          listaGrados: true,
+        },    
+      } );
 
       if (!escuelaResponse) {
         throw new createError.NotFound('Escuela no encontrada');
@@ -32,7 +40,12 @@ export const EscuelaService = {
 
   obtenerListaDeEscuelas: async ( req: Request, res: Response ) => {
     try {
-      const escuelas = await EscuelaRepository.find();
+      const escuelas = await EscuelaRepository.find({
+        relations: {
+          maestras: true,
+          listaGrados: true,
+        },
+      });
    
       return response.success( res, 200, 'Escuelas obtenidas', escuelas );
     } catch ( error ) {

@@ -3,6 +3,7 @@ import createError from 'http-errors';
 import { GradoRepository } from '../repositories/GradoRepository';
 import { logger } from '../common/logger';
 import { response } from '../common/Response';
+import { MaestraRepository } from '../repositories/MaestraRepository';
 
 interface Params {
   id: string;
@@ -11,6 +12,18 @@ interface Params {
 export const GradoService = {
   crearGrado: async ( req: Request, res: Response ) => {
     try {
+      if( !req.user?.id ) return res.status( 401 ).json({ message: 'Unauthorized' });
+
+      const maestra = await MaestraRepository.findOne({
+        where: {
+          supabaseUserId: req.user.id,
+        },
+      });
+
+      if (!maestra) {
+        return res.status(404).json({ message: "Maestra no encontrada" });
+      }
+      
       const nuevoGrado = GradoRepository.create({
         numero: req.body.numero,
         letra: req.body.letra,
@@ -22,7 +35,7 @@ export const GradoService = {
         },
 
         maestraTitular: {
-          maestraId: req.body.maestraTitularId
+          maestraId: maestra.maestraId
         }
       });
 

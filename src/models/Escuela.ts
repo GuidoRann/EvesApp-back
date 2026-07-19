@@ -16,6 +16,12 @@ export class Escuela {
   @Column()
   direccion: string
 
+ //TODO: quitarle el default y hacerla not null 
+  @Column({
+    nullable: true
+  })
+  telefono: string;
+
   @OneToMany( () => Grado, grado => grado.escuela )
   listaGrados: Grado[]
 

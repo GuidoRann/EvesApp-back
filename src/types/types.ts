@@ -74,6 +74,7 @@ export interface EscuelaDTO {
   numero: string;
   direccion: string;
   listaGrados: Grado[];
+  maestras: Maestra[];
 }
 
 export type CreateEscuelaDTO = Omit< EscuelaDTO, 'id' >

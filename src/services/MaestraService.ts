@@ -13,8 +13,18 @@ interface Params {
 export const MaestraService = {
   obtenerMaestra: async ( req: Request< Params >, res: Response ) => {
     try {
-      const { id } = req.params;
-      const maestraResponse = await MaestraRepository.findOneBy( { maestraId: id } );
+      if( !req.user?.id ) return res.status( 401 ).json({ message: 'Unauthorized' });
+
+      const maestraResponse = await MaestraRepository.findOne( { 
+        where: { 
+          supabaseUserId: req.user.id  
+        },
+        relations: {
+          escuelas: true,
+          grados: true,
+          gradosComoTitular: true
+        }
+       } );
 
       if (!maestraResponse) {
         throw new createError.NotFound('Maestra no encontrada');
@@ -30,25 +40,32 @@ export const MaestraService = {
   },
 
   obtenerPerfil: async (req: Request, res: Response) => {
-
-    if( !req.user?.id ) return res.status( 401 ).json({ message: 'Unauthorized' });
-
-    const maestra = await MaestraRepository.findOne({
-      where: { 
-        supabaseUserId: req.user.id 
-      },
-      relations: {
-        escuelas: true,
-        grados: true,
-        gradosComoTitular: true
+    try {
+      if( !req.user?.id ) return res.status( 401 ).json({ message: 'Unauthorized' });
+  
+      const maestra = await MaestraRepository.findOne({
+        where: { 
+          supabaseUserId: req.user.id 
+        },
+        relations: {
+          escuelas: {
+            listaGrados: true,
+            maestras: true,
+          },
+          grados: true,
+          gradosComoTitular: true
+        }
+      });
+  
+      if ( !maestra ) {
+        throw new createError.NotFound('Maestra no encontrada');
       }
-    });
-
-    if ( !maestra ) {
-      throw new createError.NotFound('Maestra no encontrada');
+  
+      return response.success( res, 200, 'Perfil obtenido', maestra );
+    } catch ( error ) {
+      logger.error( error );
+      response.error( res, error );      
     }
-
-    return response.success( res, 200, 'Perfil obtenido', maestra );
   },
 
   obtenerListaDeMaestras: async ( req: Request, res: Response ) => {

@@ -10,10 +10,11 @@ export class EscuelaMapper {
       numero: escuela.numero,
       direccion: escuela.direccion,
       listaGrados: escuela.listaGrados,
+      maestras: escuela.maestras
     };
   }
 
-  static toEntity(escuela: CreateEscuelaDTO): DeepPartial<Escuela> {
+  static toEntity( escuela: CreateEscuelaDTO ): DeepPartial<Escuela> {
     return {
       nombre: escuela.nombre,
       numero: escuela.numero,
