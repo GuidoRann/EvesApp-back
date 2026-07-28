@@ -51,7 +51,17 @@ export const GradoService = {
   obtenerGrado: async ( req: Request< Params >, res: Response ) => {
     try {
       const { id } = req.params;
-      const gradoObtenido = await GradoRepository.findOneBy( { gradoId: id } );
+      const gradoObtenido = await GradoRepository.findOne( { 
+        where: {
+          gradoId: id
+        },
+        relations: {
+          maestraTitular: true,
+          maestras: true,
+          escuela: true,
+          listaAlumnos: true
+        }
+      } );
 
       if (!gradoObtenido) {
         throw new createError.NotFound('Grado no encontrado');

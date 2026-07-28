@@ -34,4 +34,7 @@ export class Grado {
   
   @OneToMany( () => Alumno, alumno => alumno.grado )
   listaAlumnos: Alumno[];
+
+  @OneToMany( () => Materia, materia => materia.grado )
+  listaMaterias: Materia[]
 }

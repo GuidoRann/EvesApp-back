@@ -29,23 +29,11 @@ export const AlumnoService = {
     }
   },
   
-  //TODO: Modificar para que busque alumnos por grado
-  obtenerListaDeAlumnos: async ( req: Request, res: Response ) => {
+  crearAlumno: async ( req: Request< {}, {}, CreateAlumnoDTO >, res: Response ) => {
     try {
-      const alumnos = await AlumnoRepository.find();
-      return response.success( res, 200, 'Alumnos obtenidos', alumnos );
-    } catch ( error ) {
-      logger.error( error );
-      response.error( res, error );        
-    }
-  },
+      const alumno = req.body;
 
-  crearAlumno: async ( req: Request< {}, {}, { alumno: CreateAlumnoDTO }>, res: Response ) => {
-    try {
-      const { alumno } = req.body;
-      const alumnoEntity = AlumnoMapper.toEntity(alumno);
-
-      const alumnoCreado = await AlumnoRepository.save( alumnoEntity );
+      const alumnoCreado = await AlumnoRepository.save( alumno );
       
       return response.success( res, 201, 'Alumno creado', alumnoCreado );
     } catch ( error ) {

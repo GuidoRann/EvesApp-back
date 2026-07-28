@@ -4,9 +4,8 @@ import { AlumnoService } from "../services/AlumnoService";
 const router: Router = Router();
 
 router
-  .get( "/listado", AlumnoService.obtenerListaDeAlumnos )
   .get( "/:id", AlumnoService.obtenerAlumno )
-  .post( "/crear", AlumnoService.crearAlumno )
+  .post( "/crearAlumno", AlumnoService.crearAlumno )
   .put( "/:id", AlumnoService.actualizarAlumno )
   .delete( "/:id", AlumnoService.eliminarAlumno );
 
