@@ -51,17 +51,17 @@ export const GradoService = {
   obtenerGrado: async ( req: Request< Params >, res: Response ) => {
     try {
       const { id } = req.params;
-      const gradoObtenido = await GradoRepository.findOne( { 
-        where: {
-          gradoId: id
-        },
-        relations: {
-          maestraTitular: true,
-          maestras: true,
-          escuela: true,
-          listaAlumnos: true
-        }
-      } );
+      const gradoObtenido = await GradoRepository
+        .createQueryBuilder("grado")
+        .leftJoinAndSelect("grado.maestraTitular", "maestraTitular")
+        .leftJoinAndSelect("grado.maestras", "maestras")
+        .leftJoinAndSelect("grado.escuela", "escuela")
+        .leftJoinAndSelect("grado.listaAlumnos", "alumno")
+        .where("grado.gradoId = :id", { id })
+        .orderBy("alumno.apellidoPaterno", "ASC")
+        // .addOrderBy("alumno.apellidoMaterno", "ASC")  TODO: Esto solo es valido si se tiene que ordenar por el apellido materno
+        .addOrderBy("alumno.nombre", "ASC")
+        .getOne();
 
       if (!gradoObtenido) {
         throw new createError.NotFound('Grado no encontrado');
