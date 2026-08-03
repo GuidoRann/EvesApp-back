@@ -7,6 +7,7 @@ router
   .get( "/crear", AlumnoFamiliarService.crearAlumnoFamiliar )
   .get( "/:id", AlumnoFamiliarService.obtenerAlumnoFamiliar )
   .post( "/:id", AlumnoFamiliarService.actualizarAlumnoFamiliar )
-  .delete( "/:id", AlumnoFamiliarService.eliminarAlumnoFamiliar );
+  .delete( "/:id", AlumnoFamiliarService.eliminarAlumnoFamiliar )
+  .get( "/listarFamiliares/:alumnoId", AlumnoFamiliarService.obtenerFamiliaresPorAlumno );
 
 export const alumnoFamiliarController: Router = router;

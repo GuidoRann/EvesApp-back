@@ -37,7 +37,7 @@ export const AlumnoFamiliarService = {
         where: {
           alumno: { alumnoId }
         },
-        relations: [ 'familiar' ]
+        relations: [ 'familiares' ]
        } );
       return response.success( res, 200, 'Familiares obtenidos', familiares );
     } catch (error) {

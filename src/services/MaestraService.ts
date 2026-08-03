@@ -21,8 +21,12 @@ export const MaestraService = {
         },
         relations: {
           escuelas: true,
-          grados: true,
-          gradosComoTitular: true
+          grados: {
+            listaAlumnos: true,
+          },
+          gradosComoTitular: {
+            listaAlumnos: true,
+          },
         }
        } );
 
@@ -52,8 +56,12 @@ export const MaestraService = {
             listaGrados: true,
             maestras: true,
           },
-          grados: true,
-          gradosComoTitular: true
+          grados: {
+            listaAlumnos: true,
+          },
+          gradosComoTitular: {
+            listaAlumnos: true,
+          },
         }
       });
   

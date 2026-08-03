@@ -14,7 +14,10 @@ export const AlumnoService = {
   obtenerAlumno: async ( req: Request< Params >, res: Response ) => {
     try {
       const { id } = req.params;
-      const alumnoResponse = await AlumnoRepository.findOneBy( { alumnoId: id } );
+      const alumnoResponse = await AlumnoRepository.findOne( { 
+        where: { alumnoId: id },
+        relations: [ 'familiares' ]   
+      } );
 
       if (!alumnoResponse) {
         throw new createError.NotFound('Alumno no encontrado');
