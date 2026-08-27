@@ -31,7 +31,6 @@ app.use( '/api/maestra', maestraController );
 app.use( '/api/escuela', escuelaController );
 app.use( '/api/grado', gradoController );
 app.use( '/api/alumno', alumnoController );
-app.use( '/api/alumno-familiar', alumnoFamiliarController );
 app.use( '/api/familiar', familiarController );
 app.use( '/api/asistencia', asistenciaController );
 app.use( '/api/materia', materiaController );

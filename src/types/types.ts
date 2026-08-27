@@ -39,18 +39,6 @@ export type CreateAlumnoDTO = {
 export type UpdateAlumnoDTO = Partial< AlumnoDTO >
 export type ResponseAlumnoDTO = AlumnoDTO
 
-// -------------------- Parentesco DTOs --------------------
-
-export interface AlumnoFamiliarDTO {
-  alumnoFamiliarId: string;
-  alumno: Alumno;
-  familiar: Familiar;
-  parentesco: string;
-}
-
-export type CreateAlumnoFamiliarDTO = Omit< AlumnoFamiliarDTO, 'id' >
-export type UpdateAlumnoFamiliarDTO = Partial< CreateAlumnoFamiliarDTO >
-export type ResponseAlumnoFamiliarDTO = AlumnoFamiliarDTO
 
 // -------------------- Asistencias DTOs --------------------
 
@@ -62,7 +50,7 @@ export interface AsistenciaDTO {
   alumno: Alumno;
 }
 
-export type CreateAsistenciaDTO = Omit< AsistenciaDTO, 'id' >
+export type CreateAsistenciaDTO = Omit< AsistenciaDTO, 'asistenciaId' >
 export type UpdateAsistenciaDTO = Partial< CreateAsistenciaDTO >
 export type ResponseAsistenciaDTO = AsistenciaDTO
 
@@ -77,7 +65,7 @@ export interface EscuelaDTO {
   maestras: Maestra[];
 }
 
-export type CreateEscuelaDTO = Omit< EscuelaDTO, 'id' >
+export type CreateEscuelaDTO = Omit< EscuelaDTO, 'escuelaId' >
 export type UpdateEscuelaDTO = Partial< CreateEscuelaDTO >
 export type ResponseEscuelaDTO = EscuelaDTO
 
@@ -93,9 +81,27 @@ export interface FamiliarDTO {
   alumnos: AlumnoFamiliar[];
 }
 
-export type CreateFamiliarDTO = Omit< FamiliarDTO, 'id' >
+export type CreateFamiliarDTO = Omit< FamiliarDTO, 'familiarId' >
 export type UpdateFamiliarDTO = Partial< CreateFamiliarDTO >
 export type ResponseFamiliarDTO = FamiliarDTO
+
+// -------------------- Parentesco DTOs --------------------
+
+export interface AlumnoFamiliarDTO {
+  alumnoFamiliarId: string;
+  alumno: Alumno;
+  familiar: Familiar;
+  parentesco: string;
+}
+
+export interface CreateAlumnoFamiliarDTO {
+  familiar: CreateFamiliarDTO;
+  alumnoId: string;
+  parentesco: string;
+}
+
+export type UpdateAlumnoFamiliarDTO = Partial< CreateAlumnoFamiliarDTO >
+export type ResponseAlumnoFamiliarDTO = AlumnoFamiliarDTO
 
 // -------------------- Grado DTOs --------------------
 
@@ -111,7 +117,7 @@ export interface GradoDTO {
   maestras: Maestra[];
 }
 
-export type CreateGradoDTO = Omit< GradoDTO, 'id' >
+export type CreateGradoDTO = Omit< GradoDTO, 'gradoId' >
 export type UpdateGradoDTO = Partial< CreateGradoDTO >
 export type ResponseGradoDTO = GradoDTO
 
@@ -163,7 +169,7 @@ export interface MateriaDTO {
   grado: Grado;
 }
 
-export type CreateMateriaDTO = Omit< MateriaDTO, 'id' >
+export type CreateMateriaDTO = Omit< MateriaDTO, 'materiaId' >
 export type UpdateMateriaDTO = Partial< CreateMateriaDTO >
 export type ResponseMateriaDTO = MateriaDTO
 
@@ -178,6 +184,6 @@ export interface NotaDTO {
   materia: Materia;
 }
 
-export type CreateNotaDTO = Omit< NotaDTO, 'id' >
+export type CreateNotaDTO = Omit< NotaDTO, 'notaId' >
 export type UpdateNotaDTO = Partial< CreateNotaDTO >
 export type ResponseNotaDTO = NotaDTO
