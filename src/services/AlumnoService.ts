@@ -16,7 +16,11 @@ export const AlumnoService = {
       const { id } = req.params;
       const alumnoResponse = await AlumnoRepository.findOne( { 
         where: { alumnoId: id },
-        relations: [ 'familiares' ]   
+        relations: {
+          familiares: {
+            familiar: true
+          }
+        } 
       } );
 
       if (!alumnoResponse) {

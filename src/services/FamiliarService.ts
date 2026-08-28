@@ -19,8 +19,6 @@ export const FamiliarService = {
     try {
       const alumnoFamiliar = req.body;
 
-      console.log("Asi llega alumno familiar al backend: ", alumnoFamiliar);
-
       const resultado = await AppDataSource.transaction( async ( manager ) => {
         const alumno = await manager.findOne( Alumno, {
           where: {
