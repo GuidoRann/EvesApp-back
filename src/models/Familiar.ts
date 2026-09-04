@@ -14,6 +14,9 @@ export class Familiar {
   
   @Column()
   direccion: string;
+
+  @Column( { unique: true } )
+  numeroDocumento: string;
   
   @Column()
   numeroTelefono: string;

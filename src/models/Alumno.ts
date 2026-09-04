@@ -18,7 +18,7 @@ export class Alumno {
   @Column()
   apellidoMaterno: string
 
-  @Column()
+  @Column( { unique: true } )
   numeroDocumento: string
 
   @Column()

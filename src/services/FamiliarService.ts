@@ -12,6 +12,7 @@ import { Familiar } from '../models/Familiar';
 
 interface Params {
   id: string;
+  numeroDocumento: string
 }
 
 export const FamiliarService = {
@@ -56,6 +57,24 @@ export const FamiliarService = {
     try {
       const {id} = req.params;
       const familiarResponse = await FamiliarRepository.findOneBy({familiarId: id});
+
+      if (!familiarResponse) {
+        throw new createError.NotFound("Familiar no encontrado");
+      }
+
+      const familiarObtenido: ResponseFamiliarDTO = FamiliarMapper.toDTO(familiarResponse);
+
+      return response.success(res, 200, "Familiar obtenido", familiarObtenido);
+    } catch (error) {
+      logger.error(error);
+      response.error(res, error);
+    }
+  },
+
+  obtenerFamiliarPorDNI: async (req: Request<Params>, res: Response) => {
+    try {
+      const { numeroDocumento } = req.params;
+      const familiarResponse = await FamiliarRepository.findOneBy({ numeroDocumento: numeroDocumento });
 
       if (!familiarResponse) {
         throw new createError.NotFound("Familiar no encontrado");

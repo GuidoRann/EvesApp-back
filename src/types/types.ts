@@ -78,6 +78,7 @@ export interface FamiliarDTO {
   direccion: string;
   numeroTelefono: string;
   ocupacion: string;
+  numeroDocumento: string;
   alumnos: AlumnoFamiliar[];
 }
 

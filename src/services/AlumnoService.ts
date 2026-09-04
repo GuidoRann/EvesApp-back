@@ -23,8 +23,8 @@ export const AlumnoService = {
         } 
       } );
 
-      if (!alumnoResponse) {
-        throw new createError.NotFound('Alumno no encontrado');
+      if ( !alumnoResponse ) {
+        throw new createError.NotFound( 'Alumno no encontrado' );
       }
 
       const alumnoObtenido: ResponseAlumnoDTO = AlumnoMapper.toDTO( alumnoResponse );

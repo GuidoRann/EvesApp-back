@@ -11,6 +11,7 @@ export class FamiliarMapper {
       direccion: familiar.direccion,
       numeroTelefono: familiar.numeroTelefono,
       ocupacion: familiar.ocupacion,
+      numeroDocumento: familiar.numeroDocumento,
       alumnos: familiar.alumnos
     };
   }
@@ -22,6 +23,7 @@ export class FamiliarMapper {
       direccion: familiar.direccion,
       numeroTelefono: familiar.numeroTelefono,
       ocupacion: familiar.ocupacion,
+      numeroDocumento: familiar.numeroDocumento,
     };
   }
 
