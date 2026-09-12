@@ -4,7 +4,6 @@ import morgan from 'morgan';
 import cors from 'cors';
 import { notaController } from './controllers/NotaController';
 import { alumnoController } from './controllers/AlumnoController';
-import { alumnoFamiliarController } from './controllers/AlumnoFamiliarController';
 import { asistenciaController } from './controllers/AsistenciaController';
 import { maestraController } from './controllers/MaestraController';
 import { gradoController } from './controllers/GradoController';

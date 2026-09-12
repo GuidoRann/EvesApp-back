@@ -55,7 +55,7 @@ export const FamiliarService = {
 
   obtenerFamiliar: async (req: Request<Params>, res: Response) => {
     try {
-      const {id} = req.params;
+      const { id } = req.params;
       const familiarResponse = await FamiliarRepository.findOneBy({familiarId: id});
 
       if (!familiarResponse) {
