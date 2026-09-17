@@ -101,6 +101,12 @@ export interface CreateAlumnoFamiliarDTO {
   parentesco: string;
 }
 
+export interface addAlumnoFamiliarDTO {
+  alumnoId: string;
+  familiarId: string;
+  parentesco: string;
+}
+
 export type UpdateAlumnoFamiliarDTO = Partial< CreateAlumnoFamiliarDTO >
 export type ResponseAlumnoFamiliarDTO = AlumnoFamiliarDTO
 

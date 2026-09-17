@@ -2,9 +2,10 @@ import { type Response } from "express"
 import createError from "http-errors";
 
 export const response = {
-  success: ( res: Response, status = 200, message = "OK", body = {} ) => {
+  success: ( res: Response, status = 200, message = "OK", body: unknown = {} ) => {
     res.status( status ).json({ message, body });
   },
+
   error: ( res: Response, error?: unknown ) => {
     if (error instanceof createError.HttpError) {
       const { statusCode, message } = error;

@@ -3,7 +3,7 @@ import createError from 'http-errors';
 import { response } from '../common/Response';
 import { FamiliarMapper } from '../mappers/FamiliarMapper';
 import { FamiliarRepository } from '../repositories/FamiliarRepository';
-import { CreateAlumnoFamiliarDTO, CreateFamiliarDTO, ResponseFamiliarDTO } from '../types/types';
+import { AlumnoDTO, CreateAlumnoFamiliarDTO, addAlumnoFamiliarDTO, CreateFamiliarDTO, ResponseFamiliarDTO } from '../types/types';
 import { logger } from '../common/logger';
 import { AppDataSource } from '../db';
 import { Alumno } from '../models/Alumno';
@@ -53,6 +53,33 @@ export const FamiliarService = {
     }
   },
 
+  agregarFamiliar: async ( req: Request<{}, {}, addAlumnoFamiliarDTO>, res: Response ) => {
+    try {
+      const { alumnoId, familiarId, parentesco } = req.body;
+
+      const resultado = await AppDataSource.transaction(async ( manager ) => {
+
+        const alumnoFamiliarEntity = manager.create( AlumnoFamiliar, {
+          alumno: {
+            alumnoId
+          },
+          familiar: {
+            familiarId
+          },
+          parentesco
+        });
+
+        return await manager.save( AlumnoFamiliar, alumnoFamiliarEntity );
+      });
+
+      return response.success( res, 201, "Familiar agregado al alumno", resultado );
+
+    } catch ( error ) {
+      logger.error( error );
+      response.error( res, error );
+    }
+  },
+
   obtenerFamiliar: async (req: Request<Params>, res: Response) => {
     try {
       const { id } = req.params;
@@ -77,7 +104,12 @@ export const FamiliarService = {
       const familiarResponse = await FamiliarRepository.findOneBy({ numeroDocumento: numeroDocumento });
 
       if (!familiarResponse) {
-        throw new createError.NotFound("Familiar no encontrado");
+        return response.success(
+          res,
+          200,
+          "Familiar no encontrado",
+          null
+        );
       }
 
       const familiarObtenido: ResponseFamiliarDTO = FamiliarMapper.toDTO(familiarResponse);

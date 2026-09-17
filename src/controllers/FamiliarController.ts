@@ -5,8 +5,9 @@ const router: Router = Router();
 
 router
   .get( "/:id", FamiliarService.obtenerFamiliar )
-  .get( "/buscarPorDni/:dni", FamiliarService.obtenerFamiliarPorDNI )
+  .get( "/buscarPorDni/:numeroDocumento", FamiliarService.obtenerFamiliarPorDNI )
   .post( "/crearFamiliar", FamiliarService.crearFamiliar )
+  .post( "/agregarFamiliar", FamiliarService.agregarFamiliar )
   .post( "/:id", FamiliarService.actualizarFamiliar )
   .delete( "/:id", FamiliarService.eliminarFamiliar );
 
