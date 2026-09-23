@@ -58,8 +58,6 @@ export const EscuelaService = {
     try {
       const escuelaEntity = EscuelaMapper.toEntity( req.body );
 
-      console.log(" Escuela entrante: ", escuelaEntity);
-      
       const escuelaCreada = await EscuelaRepository.save( escuelaEntity );
       
       return response.success( res, 201, 'Escuela creada', escuelaCreada );

@@ -20,7 +20,10 @@ export const MaestraService = {
           supabaseUserId: req.user.id  
         },
         relations: {
-          escuelas: true,
+          escuelas: {
+            listaGrados: true,
+            maestras: true,
+          },
           grados: {
             listaAlumnos: true,
             escuela: true
