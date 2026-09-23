@@ -43,7 +43,7 @@ export class Alumno {
   @OneToMany( () => Nota, nota => nota.alumno )
   notas: Nota[];
 
-  @Column( 'simple-array', { nullable: true } )
+  @Column( 'simple-array' )
   promediosTrimestrales: string[]; // Ej: ["85.5", "78.2", "90.1"]
   
   @Column( { type: 'decimal', precision: 5, scale: 2, nullable: true } )

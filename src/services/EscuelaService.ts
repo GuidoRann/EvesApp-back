@@ -57,6 +57,8 @@ export const EscuelaService = {
   crearEscuela: async ( req: Request< {}, {}, CreateEscuelaDTO >, res: Response ) => {
     try {
       const escuelaEntity = EscuelaMapper.toEntity( req.body );
+
+      console.log(" Escuela entrante: ", escuelaEntity);
       
       const escuelaCreada = await EscuelaRepository.save( escuelaEntity );
       

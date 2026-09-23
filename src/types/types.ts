@@ -61,6 +61,7 @@ export interface EscuelaDTO {
   nombre: string;
   numero: string;
   direccion: string;
+  telefono: string;
   listaGrados: Grado[];
   maestras: Maestra[];
 }

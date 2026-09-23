@@ -9,6 +9,7 @@ export class EscuelaMapper {
       nombre: escuela.nombre,
       numero: escuela.numero,
       direccion: escuela.direccion,
+      telefono: escuela.telefono,
       listaGrados: escuela.listaGrados,
       maestras: escuela.maestras
     };
@@ -19,6 +20,7 @@ export class EscuelaMapper {
       nombre: escuela.nombre,
       numero: escuela.numero,
       direccion: escuela.direccion,
+      telefono: escuela.telefono
     };
   }
 }
