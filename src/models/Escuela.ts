@@ -10,16 +10,13 @@ export class Escuela {
   @Column()
   nombre: string
 
-  @Column()
+  @Column( { unique: true } )
   numero: string
 
   @Column()
   direccion: string
 
- //TODO: quitarle el default y hacerla not null 
-  @Column({
-    nullable: true
-  })
+  @Column({ nullable: true })
   telefono: string;
 
   @OneToMany( () => Grado, grado => grado.escuela )
