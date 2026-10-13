@@ -5,7 +5,8 @@ const router: Router = Router();
 
 router
   .get( "/:id", AsistenciaService.obtenerAsistencia )
-  .post( "/crear", AsistenciaService.crearAsistencia )
+  .post( "/crearAsistencias", AsistenciaService.crearAsistencia )
+  .get( "/obtenerPorFecha", AsistenciaService.obtenerPorFecha )
   .put( "/:id", AsistenciaService.actualizarAsistencia )
   .delete( "/:id", AsistenciaService.eliminarAsistencia );
 

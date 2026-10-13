@@ -2,9 +2,13 @@ import {  type Request, type Response } from 'express';
 import createError from 'http-errors';
 import { AsistenciaMapper } from '../mappers/AsistenciaMapper';
 import { AsistenciaRepository } from '../repositories/AsistenciaRepository';
-import { CreateAsistenciaDTO, ResponseAsistenciaDTO, UpdateAsistenciaDTO } from '../types/types';
+import { AsistenciaAlumnoDTO, AsistenciaDTO, CreateAsistenciaDTO, ResponseAsistenciaDTO, UpdateAsistenciaDTO } from '../types/types';
 import { response } from '../common/Response';
 import { logger } from '../common/logger';
+import { AlumnoRepository } from '../repositories/AlumnoRepository';
+import { AppDataSource } from '../db';
+import { Asistencia } from '../models/Asistencia';
+import { Alumno } from '../models/Alumno';
 
 interface Params {
   id: string;
@@ -30,20 +34,129 @@ export const AsistenciaService = {
     }
   },
 
-  crearAsistencia: async ( req: Request< {}, {}, { asistencia: CreateAsistenciaDTO } >, res: Response ) => {
+  obtenerPorFecha: async ( req: Request, res: Response ) => {
     try {
-      const { asistencia } = req.body;
+      const { fecha } = req.params;
+      
+      if (!fecha) {
+        throw new createError.BadRequest('Fecha no proporcionada');
+      }
+      
+      const asistenciasResponse = await AsistenciaRepository.find( {
+        where: {
+          fecha
+        },
+        relations: {
+          alumno: true
+        }
+      } );
 
-      const asistenciaEntity = AsistenciaMapper.toEntity( asistencia ); 
+      if (asistenciasResponse.length === 0) {
+        throw new createError.NotFound('Asistencias no encontradas');
+      }
 
-      const asistenciaCreada = await AsistenciaRepository.save( asistenciaEntity );
+      const asistenciasObtenidas: ResponseAsistenciaDTO[] = AsistenciaMapper.toDTOList( asistenciasResponse );
 
-      return response.success( res, 201, 'Asistencia creada', asistenciaCreada );
-    } catch ( error ) {
+      return response.success( res, 200, 'Asistencias obtenidas', asistenciasObtenidas );
+    } catch (error) {
       logger.error( error );
       response.error( res, error );
     }
   },
+
+  crearAsistencia: async (
+    req: Request<{}, {}, CreateAsistenciaDTO>,
+    res: Response
+  ) => {
+    try {
+      const { fecha, alumnos } = req.body;
+
+      const resultado = await AppDataSource.transaction( async ( manager ) => {
+
+        const asistenciasExistentes = await manager.find( Asistencia, {
+          where: {
+            fecha
+          },
+          relations: {
+            alumno: true
+          }
+        });
+
+      // Primer registro de asistencias de la fecha
+      if (asistenciasExistentes.length === 0) {
+        const asistenciasEntities: AsistenciaDTO[] = [];
+
+        console.log("No existen asistencias para esa fecha");
+
+        for (const item of alumnos) {
+          const alumno = await manager.findOne( Alumno, {
+            where: {
+              alumnoId: item.alumnoId
+            }
+          });
+
+          if (!alumno) {
+            throw new createError.NotFound(
+              `Alumno ${item.alumnoId} no encontrado`
+            );
+          }
+
+          const asistencia = manager.create(Asistencia, {
+            fecha,
+            asistio: item.asistio,
+            alumno
+          });
+
+          asistenciasEntities.push(asistencia);
+        }
+
+        return await manager.save(Asistencia, asistenciasEntities);
+      }
+
+      // Ya existen asistencias para esa fecha.
+      // Solo se actualizan las que hayan cambiado.
+      const asistenciasActualizadas: AsistenciaDTO[] = [];
+
+      console.log("Ya existen asistencias para esa fecha");
+
+      for (const item of alumnos) {
+        const asistenciaExistente = asistenciasExistentes.find(
+          (asistencia) =>
+            asistencia.alumno.alumnoId === item.alumnoId
+        );
+
+        if (!asistenciaExistente) {
+          throw new createError.NotFound(
+            `No existe asistencia para el alumno ${item.alumnoId} en la fecha ${fecha}`
+          );
+        }
+
+        if (asistenciaExistente.asistio !== item.asistio) {
+          asistenciaExistente.asistio = item.asistio;
+
+          asistenciasActualizadas.push(asistenciaExistente);
+        }
+      }
+
+      if (asistenciasActualizadas.length > 0) {
+        await manager.save(Asistencia, asistenciasActualizadas);
+      }
+
+      return asistenciasActualizadas;
+    });
+
+    return response.success(
+      res,
+      200,
+      'Asistencias guardadas',
+      resultado
+    );
+
+  } catch (error) {
+    logger.error(error);
+    response.error(res, error);
+  }
+},
 
   actualizarAsistencia: async ( req: Request< Params, {}, { asistencia: UpdateAsistenciaDTO } >, res: Response ) => {
     try {

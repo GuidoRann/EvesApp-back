@@ -50,7 +50,16 @@ export interface AsistenciaDTO {
   alumno: Alumno;
 }
 
-export type CreateAsistenciaDTO = Omit< AsistenciaDTO, 'asistenciaId' >
+export interface AsistenciaAlumnoDTO {
+  alumnoId: string;
+  asistio: boolean;
+}
+
+export interface CreateAsistenciaDTO {
+  fecha: Date;
+  alumnos: AsistenciaAlumnoDTO[];
+}
+
 export type UpdateAsistenciaDTO = Partial< CreateAsistenciaDTO >
 export type ResponseAsistenciaDTO = AsistenciaDTO
 
