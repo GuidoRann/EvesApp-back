@@ -41,10 +41,20 @@ export const AsistenciaService = {
       if (!fecha) {
         throw new createError.BadRequest('Fecha no proporcionada');
       }
+
+      if (typeof fecha !== 'string') {
+        throw new createError.BadRequest('Fecha inválida');
+      }
+
+      const fechaBuscada = new Date(
+        Number(fecha.substring(0, 4)),
+        Number(fecha.substring(5, 7)) - 1,
+        Number(fecha.substring(8, 10))
+      );
       
       const asistenciasResponse = await AsistenciaRepository.find( {
         where: {
-          fecha
+          fecha: fechaBuscada
         },
         relations: {
           alumno: true
