@@ -4,8 +4,9 @@ import { NotaService } from "../services/NotaService";
 const router: Router = Router();
 
 router
-  .get( "/:id", NotaService.obtenerNota )
-  .post( "/crear", NotaService.crearNota )
+  .get( "/:alumnoId", NotaService.obtenerNotaPorAlumno )
+  .post( "/crearNota", NotaService.crearNota )
+  .post( "/crearListadoNotas", NotaService.crearListadoNotas )
   .put( "/:id", NotaService.actualizarNota )
   .delete( "/:id", NotaService.eliminarNota );
 

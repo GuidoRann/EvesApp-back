@@ -201,6 +201,16 @@ export interface NotaDTO {
   materia: Materia;
 }
 
+export interface CreateListadoNotasDTO {
+  plazo: string;
+  notas: {
+    [ materia: string ]: {
+      alumnoId: string;
+      nota: string;
+    }[];
+  };
+}
+
 export type CreateNotaDTO = Omit< NotaDTO, 'notaId' >
 export type UpdateNotaDTO = Partial< CreateNotaDTO >
 export type ResponseNotaDTO = NotaDTO

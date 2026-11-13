@@ -1,8 +1,9 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { Alumno } from './Alumno';
 import { Materia } from './Materia';
 
 @Entity()
+@Unique(['alumno', 'materia', 'plazo'])
 export class Nota {
   @PrimaryGeneratedColumn('uuid')
   notaId: string
