@@ -5,8 +5,8 @@ const router: Router = Router();
 
 router
   .get( "/me", MaestraService.obtenerPerfil )
+  .get( "/listarMaestras", MaestraService.obtenerListaDeMaestras )
   .get( "/:id", MaestraService.obtenerMaestra )
-  .get( "/listado", MaestraService.obtenerListaDeMaestras )
   .put( "/:id", MaestraService.actualizarMaestra )
   .delete( "/:id", MaestraService.eliminarMaestra );
 

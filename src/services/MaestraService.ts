@@ -83,14 +83,27 @@ export const MaestraService = {
     }
   },
 
-  obtenerListaDeMaestras: async ( req: Request, res: Response ) => {
+  obtenerListaDeMaestras: async (req: Request, res: Response) => {
+    console.log('🔥🔥🔥 EJECUTANDO obtenerListaDeMaestras 🔥🔥🔥');
     try {
-      const maestras = await MaestraRepository.find();
-   
-      return response.success( res, 200, 'Maestras obtenidas', maestras );
-    } catch ( error ) {
-      logger.error( error );
-      response.error( res, error );  
+      const maestras = await MaestraRepository
+        .createQueryBuilder('maestra')
+        .getMany();
+
+      console.log('Cantidad de maestras:', maestras.length);
+      console.log('Maestras:', maestras);
+
+      return response.success(
+        res,
+        200,
+        'Maestras obtenidas',
+        maestras
+      );
+
+    } catch (error) {
+      console.log('ERROR:', error);
+      logger.error(error);
+      return response.error(res, error);
     }
   },
 
