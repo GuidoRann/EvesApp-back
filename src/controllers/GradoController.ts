@@ -7,6 +7,7 @@ router
   .get( "/:id", GradoService.obtenerGrado )
   .get( "/listarGrados", GradoService.obtenerListaDeGrados )
   .post( "/crearGrado", GradoService.crearGrado )
+  .put( "/agregarMaestra/:id", GradoService.agregarMaestra )
   .put( "/:id", GradoService.actualizarGrado )
   .delete( "/:id", GradoService.eliminarGrado );
 

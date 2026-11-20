@@ -30,7 +30,7 @@ export class Grado {
 
   @ManyToMany( () => Maestra, maestra => maestra.grados )
   @JoinTable()
-  maestras: Maestra[];
+  maestrasAdicionales: Maestra[];
   
   @OneToMany( () => Alumno, alumno => alumno.grado )
   listaAlumnos: Alumno[];

@@ -54,7 +54,7 @@ export const GradoService = {
       const gradoObtenido = await GradoRepository
         .createQueryBuilder("grado")
         .leftJoinAndSelect("grado.maestraTitular", "maestraTitular")
-        .leftJoinAndSelect("grado.maestras", "maestras")
+        .leftJoinAndSelect("grado.maestrasAdicionales", "maestrasAdicionales")
         .leftJoinAndSelect("grado.escuela", "escuela")
         .leftJoinAndSelect("grado.listaAlumnos", "alumno")
         .where("grado.gradoId = :id", { id })
@@ -118,4 +118,57 @@ export const GradoService = {
       response.error( res, error );       
     }
   },
+
+  // Seccion de Maestras
+
+  agregarMaestra: async ( req: Request< Params >, res: Response ) => {
+    try {
+      const { id } = req.params;
+      const { maestraId } = req.body;
+
+      const gradoExistente = await GradoRepository.findOne({
+        where: { gradoId: id },
+        relations: {
+          maestraTitular: true,
+          maestrasAdicionales: true
+        }
+      });
+
+      const maestraExistente = await MaestraRepository.findOneBy({
+        maestraId
+      });
+
+      if ( !gradoExistente ) {
+        return response.error( res, new createError.NotFound('Grado no encontrado') );
+      }
+
+      if ( !maestraExistente ) {
+        return response.error( res, new createError.NotFound('Maestra no encontrada') );
+      }
+
+      if ( gradoExistente.maestraTitular.maestraId === maestraId ) {
+        return response.error( res, new createError.BadRequest('La maestra ya es titular de este grado') );
+      }
+
+      const yaExiste = gradoExistente.maestrasAdicionales.some(
+        maestra => maestra.maestraId === maestraId
+      );
+
+      if ( yaExiste ) {
+        return response.error( res, new createError.BadRequest('La maestra ya está agregada a este grado') );
+      }
+
+      gradoExistente.maestrasAdicionales.push( maestraExistente );
+
+      await GradoRepository.save( gradoExistente );
+
+      return response.success( res, 200, 'Maestra agregada', gradoExistente );
+
+    } catch ( error ) {
+      logger.error( error );
+      response.error( res, error );
+    }
+  }
+
+  // Seccion de Materias
 };

@@ -13,7 +13,7 @@ export class GradoMapper {
       maestraTitular: grado.maestraTitular,
       ListaMaterias: grado.ListaMaterias,
       listaAlumnos: grado.listaAlumnos,
-      maestras: grado.maestras
+      maestras: grado.maestrasAdicionales
     };
   }
 

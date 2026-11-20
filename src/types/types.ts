@@ -131,7 +131,7 @@ export interface GradoDTO {
   maestraTitular: Maestra;
   ListaMaterias: Materia[];
   listaAlumnos: Alumno[];
-  maestras: Maestra[];
+  maestrasAdicionales: Maestra[];
 }
 
 export type CreateGradoDTO = Omit< GradoDTO, 'gradoId' >

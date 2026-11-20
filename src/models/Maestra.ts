@@ -35,7 +35,7 @@ export class Maestra {
   tareas: Tarea[]
 
   // Grados donde es maestra
-  @ManyToMany( () => Grado, grado => grado.maestras )
+  @ManyToMany( () => Grado, grado => grado.maestrasAdicionales )
   grados: Grado[];
 
   @CreateDateColumn()
